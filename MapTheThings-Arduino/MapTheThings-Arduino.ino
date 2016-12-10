@@ -14,6 +14,11 @@
 #include "Adafruit_BLE.h" // Define TimeoutTimer
 #include "Logging.h"
 
+#include "Catena4420.h"
+#include <Arduino_LoRaWAN.h>
+#include <mcciadk_baselib.h>
+
+
 extern "C"{
   void debugPrint(const char *msg);
   void debugLog(const char *msg, uint16_t value);
@@ -118,6 +123,7 @@ static void logToBluetooth(const char *s) {
 static char logBuffer[200];
 LogBufferedPrinter BluetoothPrinter(logToBluetooth, logBuffer, sizeof(logBuffer));
 
+
 void setup() {
     // Log.Init(LOG_LEVEL_DEBUG, 115200);
     Log.Init(LOG_LEVEL_DEBUG, BluetoothPrinter);
@@ -131,10 +137,11 @@ void setup() {
     Log.Debug(F("setupLora" CR));
     setupLora();
 
-    uint32_t dev = __builtin_bswap32(DEVADDR);
-    setBluetoothCharData(charConfigs[2].charId, (const uint8_t*)&dev, 4);
-    setBluetoothCharData(charConfigs[3].charId, NWKSKEY, 16);
-    setBluetoothCharData(charConfigs[4].charId, APPSKEY, 16);
+    // the following make no sense until we're registered for OTAA...
+//    uint32_t dev = __builtin_bswap32(DEVADDR);
+//    setBluetoothCharData(charConfigs[2].charId, (const uint8_t*)&dev, 4);
+//    setBluetoothCharData(charConfigs[3].charId, NWKSKEY, 16);
+//    setBluetoothCharData(charConfigs[4].charId, APPSKEY, 16);
     Log.Debug(F("setup done" CR));
 }
 

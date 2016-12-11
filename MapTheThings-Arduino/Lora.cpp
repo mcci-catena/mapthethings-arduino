@@ -52,8 +52,6 @@ static void loraTxDone(void *pDoneCtx, bool fSuccess) {
 
 void setupLora() {
     gCatena.begin();
-    gLoRaWAN.begin(&gCatena);
-
     CatenaSamd21::UniqueID_string_t CpuIDstring;
 
     gCatena.SafePrintf("CPU Unique ID: %s\n",
@@ -82,6 +80,9 @@ void setupLora() {
             gCatena.GetOperatingFlags()
             );
     }
+
+    gLoRaWAN.begin(&gCatena);
+
     // start the join process by sending a dummy message.
     static uint8_t d[1] = { 0 };
     loraSendBytes(d, sizeof(d));
